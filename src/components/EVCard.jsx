@@ -1,32 +1,19 @@
 import React, { useState } from 'react';
 import { Zap, Battery, Gauge, ShieldCheck, Plus, Check, Eye, DollarSign, Award, Clock, Car, Bike, Sparkles } from 'lucide-react';
-import { getVehicleImageryApiUrl, getImaginStudioUrl } from '../services/vehicleImageryApi';
 
 export default function EVCard({ ev, isCompared, onToggleCompare, onViewDetails }) {
-  // Multistage fallback state for Vehicle Imagery API
-  const [imgStage, setImgStage] = useState(0); 
+  const [imgSrc, setImgSrc] = useState(ev.image);
+  const [imgError, setImgError] = useState(false);
 
-  // Compute image sources array in order of priority:
-  // 1. Official VehicleImagery.com API (https://api.vehicleimagery.com)
-  // 2. ev.image property
-  // 3. Official Imagin.Studio 3D Vehicle Render API
-  // 4. Fallback High-Res Unsplash Vehicle Studio Photo
-  const imageSources = [
-    getVehicleImageryApiUrl(ev.brand, ev.name),
-    ev.image,
-    getImaginStudioUrl(ev.brand, ev.name),
-    ev.category === '4W' 
-      ? 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&auto=format&fit=crop&q=80'
-      : 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=800&auto=format&fit=crop&q=80'
-  ];
-
-  const currentImgSrc = imageSources[imgStage] || imageSources[0];
+  const fallbackImage = ev.category === '4W' 
+    ? 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&auto=format&fit=crop&q=80'
+    : 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=800&auto=format&fit=crop&q=80';
 
   const handleImageError = () => {
-    if (imgStage < imageSources.length - 1) {
-      setImgStage(prev => prev + 1);
+    if (imgSrc !== fallbackImage) {
+      setImgSrc(fallbackImage);
     } else {
-      setImgStage(99); // Metallic fallback state
+      setImgError(true);
     }
   };
 
@@ -34,24 +21,24 @@ export default function EVCard({ ev, isCompared, onToggleCompare, onViewDetails 
     <div className="oneui-card overflow-hidden flex flex-col group hover:shadow-xl transition-all duration-300">
       
       {/* EV Image Container with Pill Badges */}
-      <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 flex items-center justify-center">
-        {imgStage !== 99 ? (
+      <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-950 flex items-center justify-center">
+        {!imgError ? (
           <img 
-            src={currentImgSrc} 
+            src={imgSrc} 
             alt={ev.name}
             onError={handleImageError}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
             loading="lazy"
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-tr from-slate-900 via-indigo-950 to-slate-900 text-white p-4 text-center">
+          <div className="w-full h-full relative overflow-hidden bg-gradient-to-br from-indigo-950 via-slate-900 to-purple-950 flex flex-col items-center justify-center p-4 text-center">
             {ev.category === '4W' ? (
-              <Car className="w-12 h-12 text-indigo-400 mb-2 animate-bounce" />
+              <Car className="w-10 h-10 text-indigo-400 mb-1 animate-pulse" />
             ) : (
-              <Bike className="w-12 h-12 text-purple-400 mb-2 animate-bounce" />
+              <Bike className="w-10 h-10 text-purple-400 mb-1 animate-pulse" />
             )}
-            <span className="text-xs font-black tracking-wide text-slate-200">{ev.name}</span>
-            <span className="text-[10px] text-slate-400 mt-1">{ev.brand} • {ev.bodyType}</span>
+            <span className="text-xs font-black text-slate-200">{ev.name}</span>
+            <span className="text-[10px] text-slate-400 mt-0.5">{ev.brand} • {ev.bodyType}</span>
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent pointer-events-none" />
@@ -62,7 +49,7 @@ export default function EVCard({ ev, isCompared, onToggleCompare, onViewDetails 
             {ev.category === '4W' ? '🚗 4W' : '🛵 2W'} • {ev.bodyType}
           </span>
           <span className="oneui-badge bg-indigo-600/80 backdrop-blur-md text-white text-[10px] border border-indigo-400/30">
-            <Sparkles className="w-2.5 h-2.5 inline mr-1" /> Vehicle API
+            <Sparkles className="w-2.5 h-2.5 inline mr-1" /> HD EV Studio
           </span>
         </div>
 
