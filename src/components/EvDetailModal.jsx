@@ -22,10 +22,14 @@ export default function EvDetailModal({ ev, isOpen, onClose, isCompared, onToggl
       <div className="oneui-card w-full max-w-3xl overflow-hidden bg-slate-900 border-slate-700 text-white shadow-2xl flex flex-col max-h-[90vh]">
         
         {/* Header Hero Image with Close Button */}
-        <div className="relative h-56 sm:h-64 w-full bg-slate-950">
+        <div className="relative h-56 sm:h-64 w-full bg-slate-950 flex items-center justify-center">
           <img 
             src={ev.image} 
             alt={ev.name} 
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&auto=format&fit=crop&q=80';
+            }}
             className="w-full h-full object-cover opacity-90"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent" />

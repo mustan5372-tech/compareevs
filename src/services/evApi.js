@@ -1,8 +1,10 @@
 import { EV_DATABASE } from '../data/evDatabase';
+import { getImaginStudioUrl } from './vehicleImageryApi';
 
-// Multi-source EV APIs integrated (CarWale, Carapis, Zyla, MyNewCar, CarDekho)
+// Multi-source EV APIs integrated (CarWale, Carapis, Zyla, MyNewCar, CarDekho, Imagin.Studio Vehicle Imagery API)
 export const API_SOURCES = {
   ALL: { id: "all", name: "Consolidated Multi-API Feed (CarWale + Zyla + Carapis + CarDekho)", status: "Active", latency: 24 },
+  IMAGIN_STUDIO: { id: "imagin-studio", name: "Imagin.Studio 3D Vehicle Imagery API", status: "Active", latency: 18 },
   CARWALE: { id: "carwale", name: "CarWale Indian EV Database API v3", status: "Connected", latency: 30 },
   ZYLA: { id: "zyla", name: "Zyla Indian Automobile EV Specs API", status: "Connected", latency: 26 },
   CARAPIS: { id: "carapis", name: "Carapis Vehicle Data API", status: "Connected", latency: 34 },
@@ -26,35 +28,10 @@ class EvApiService {
   }
 
   /**
-   * Fetches real vehicle image from Wikipedia / Wikimedia Commons API
+   * Fetches official Vehicle Imagery API URL for any brand & model
    */
-  async fetchRealCarImage(vehicleName) {
-    if (this.imageCache.has(vehicleName)) {
-      return this.imageCache.get(vehicleName);
-    }
-
-    try {
-      // Query Wikipedia API for main page image thumbnail
-      const searchTerm = encodeURIComponent(vehicleName.replace('EV', '').trim());
-      const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${searchTerm}&prop=pageimages&format=json&pithumbsize=800&origin=*`;
-      
-      const response = await fetch(url);
-      const data = await response.json();
-      
-      const pages = data?.query?.pages;
-      if (pages) {
-        const pageId = Object.keys(pages)[0];
-        const imageUrl = pages[pageId]?.thumbnail?.source;
-        if (imageUrl) {
-          this.imageCache.set(vehicleName, imageUrl);
-          return imageUrl;
-        }
-      }
-    } catch (e) {
-      console.warn("Wikipedia image API search failed for", vehicleName, e);
-    }
-
-    return null;
+  getVehicleApiImage(brand, name) {
+    return getImaginStudioUrl(brand, name);
   }
 
   async getAllEvs(filters = {}) {
@@ -106,7 +83,7 @@ class EvApiService {
     this.lastResponse = {
       status: 200,
       source: this.currentSource,
-      activeApis: ["CarWale API", "Zyla EV Dataset", "Carapis Feed", "MyNewCar API", "CarDekho Feed"],
+      activeApis: ["Imagin.Studio 3D Vehicle API", "CarWale API", "Zyla EV Dataset", "Carapis Feed", "MyNewCar API", "CarDekho Feed"],
       endpoint: `https://api.compareevs.in/v3/aggregate?source=${this.currentSource}`,
       requestTimeMs: duration,
       resultCount: data.length,

@@ -1,19 +1,43 @@
 import React, { useState } from 'react';
-import { Zap, Battery, Gauge, ShieldCheck, Plus, Check, Eye, DollarSign, Award, Clock, Car, Bike } from 'lucide-react';
+import { Zap, Battery, Gauge, ShieldCheck, Plus, Check, Eye, DollarSign, Award, Clock, Car, Bike, Sparkles } from 'lucide-react';
+import { getImaginStudioUrl } from '../services/vehicleImageryApi';
 
 export default function EVCard({ ev, isCompared, onToggleCompare, onViewDetails }) {
-  const [imgError, setImgError] = useState(false);
+  // Multistage fallback state for Vehicle Imagery API
+  const [imgStage, setImgStage] = useState(0); 
+
+  // Compute image sources array in order of priority:
+  // 1. Direct local HD asset (if exists) or specified image
+  // 2. Official Imagin.Studio Vehicle 3D Render API
+  // 3. Fallback High-Res Unsplash Vehicle Studio Photo
+  const imageSources = [
+    ev.image,
+    getImaginStudioUrl(ev.brand, ev.name),
+    ev.category === '4W' 
+      ? 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&auto=format&fit=crop&q=80'
+      : 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=800&auto=format&fit=crop&q=80'
+  ];
+
+  const currentImgSrc = imageSources[imgStage] || imageSources[0];
+
+  const handleImageError = () => {
+    if (imgStage < imageSources.length - 1) {
+      setImgStage(prev => prev + 1);
+    } else {
+      setImgStage(99); // Metallic fallback state
+    }
+  };
 
   return (
     <div className="oneui-card overflow-hidden flex flex-col group hover:shadow-xl transition-all duration-300">
       
       {/* EV Image Container with Pill Badges */}
-      <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-900 flex items-center justify-center">
-        {!imgError ? (
+      <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 flex items-center justify-center">
+        {imgStage !== 99 ? (
           <img 
-            src={ev.image} 
+            src={currentImgSrc} 
             alt={ev.name}
-            onError={() => setImgError(true)}
+            onError={handleImageError}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
             loading="lazy"
           />
@@ -34,6 +58,9 @@ export default function EVCard({ ev, isCompared, onToggleCompare, onViewDetails 
         <div className="absolute top-3 left-3 flex items-center gap-2">
           <span className="oneui-badge bg-black/60 backdrop-blur-md text-white border border-white/20">
             {ev.category === '4W' ? '🚗 4W' : '🛵 2W'} • {ev.bodyType}
+          </span>
+          <span className="oneui-badge bg-indigo-600/80 backdrop-blur-md text-white text-[10px] border border-indigo-400/30">
+            <Sparkles className="w-2.5 h-2.5 inline mr-1" /> Vehicle API
           </span>
         </div>
 
