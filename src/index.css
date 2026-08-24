@@ -1,0 +1,161 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-main: #F3F4F8;
+    --card-bg: #FFFFFF;
+    --card-secondary: #F8FAFC;
+    --pill-bg: #EAEFF7;
+    --pill-hover: #DFE5F2;
+    --pill-active: #3B82F6;
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #64748B;
+    --border-color: #E2E8F0;
+    --accent-blue: #2563EB;
+    --accent-indigo: #4F46E5;
+    --accent-purple: #7C3AED;
+    --oneui-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+    --oneui-squircle: 24px;
+  }
+
+  .dark {
+    --bg-main: #06080D;
+    --card-bg: #12151E;
+    --card-secondary: #181C28;
+    --pill-bg: #1F2433;
+    --pill-hover: #2B3145;
+    --pill-active: #4F46E5;
+    --text-primary: #F8FAFC;
+    --text-secondary: #94A3B8;
+    --text-muted: #64748B;
+    --border-color: #232838;
+    --accent-blue: #3B82F6;
+    --accent-indigo: #6366F1;
+    --accent-purple: #8B5CF6;
+    --oneui-shadow: 0 10px 35px -5px rgba(0, 0, 0, 0.5);
+  }
+
+  body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    overflow-x: hidden;
+  }
+}
+
+/* Custom Samsung One UI 9 Components & Utility Classes */
+
+/* One UI Squircle Card */
+.oneui-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 28px;
+  box-shadow: var(--oneui-shadow);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.oneui-card:hover {
+  transform: translateY(-2px);
+}
+
+/* One UI Pill Button */
+.oneui-pill {
+  background-color: var(--pill-bg);
+  color: var(--text-primary);
+  border-radius: 9999px;
+  padding: 8px 18px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid transparent;
+}
+
+.oneui-pill:hover {
+  background-color: var(--pill-hover);
+}
+
+.oneui-pill.active {
+  background: linear-gradient(135deg, var(--accent-indigo), var(--accent-blue));
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+}
+
+/* One UI Glass Header */
+.oneui-header {
+  background-color: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.dark .oneui-header {
+  background-color: rgba(18, 21, 30, 0.75);
+}
+
+/* Pill Shaped Input */
+.oneui-input {
+  background-color: var(--pill-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 9999px;
+  padding: 10px 20px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.oneui-input:focus {
+  border-color: var(--accent-indigo);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+/* One UI Badge */
+.oneui-badge {
+  border-radius: 9999px;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Winning Spec Highlighter */
+.winner-highlight {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  color: #10B981 !important;
+}
+
+/* Custom Scrollbar for One UI Matrix */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--pill-hover);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Pulse Glow Animation */
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.03); }
+}
+
+.pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
