@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { Zap, Battery, Gauge, ShieldCheck, Plus, Check, Eye, DollarSign, Award, Clock, Car, Bike, Sparkles } from 'lucide-react';
-import { getImaginStudioUrl } from '../services/vehicleImageryApi';
+import { getVehicleImageryApiUrl, getImaginStudioUrl } from '../services/vehicleImageryApi';
 
 export default function EVCard({ ev, isCompared, onToggleCompare, onViewDetails }) {
   // Multistage fallback state for Vehicle Imagery API
   const [imgStage, setImgStage] = useState(0); 
 
   // Compute image sources array in order of priority:
-  // 1. Direct local HD asset (if exists) or specified image
-  // 2. Official Imagin.Studio Vehicle 3D Render API
-  // 3. Fallback High-Res Unsplash Vehicle Studio Photo
+  // 1. Official VehicleImagery.com API (https://api.vehicleimagery.com)
+  // 2. ev.image property
+  // 3. Official Imagin.Studio 3D Vehicle Render API
+  // 4. Fallback High-Res Unsplash Vehicle Studio Photo
   const imageSources = [
+    getVehicleImageryApiUrl(ev.brand, ev.name),
     ev.image,
     getImaginStudioUrl(ev.brand, ev.name),
     ev.category === '4W' 
