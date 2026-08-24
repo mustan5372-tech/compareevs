@@ -14,6 +14,7 @@ class EvApiService {
   constructor() {
     this.currentSource = 'all';
     this.lastResponse = null;
+    this.imageCache = new Map();
   }
 
   setSource(sourceId) {
@@ -24,11 +25,36 @@ class EvApiService {
     return this.currentSource;
   }
 
-  // Dynamic Image API Resolver for EV models using high quality car image endpoints
-  getImageUrl(brand, model, bodyType) {
-    // Curated high quality automotive photography links mapped to vehicle types
-    const query = encodeURIComponent(`${brand} ${model} electric car`);
-    return `https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&auto=format&fit=crop&q=60`;
+  /**
+   * Fetches real vehicle image from Wikipedia / Wikimedia Commons API
+   */
+  async fetchRealCarImage(vehicleName) {
+    if (this.imageCache.has(vehicleName)) {
+      return this.imageCache.get(vehicleName);
+    }
+
+    try {
+      // Query Wikipedia API for main page image thumbnail
+      const searchTerm = encodeURIComponent(vehicleName.replace('EV', '').trim());
+      const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${searchTerm}&prop=pageimages&format=json&pithumbsize=800&origin=*`;
+      
+      const response = await fetch(url);
+      const data = await response.json();
+      
+      const pages = data?.query?.pages;
+      if (pages) {
+        const pageId = Object.keys(pages)[0];
+        const imageUrl = pages[pageId]?.thumbnail?.source;
+        if (imageUrl) {
+          this.imageCache.set(vehicleName, imageUrl);
+          return imageUrl;
+        }
+      }
+    } catch (e) {
+      console.warn("Wikipedia image API search failed for", vehicleName, e);
+    }
+
+    return null;
   }
 
   async getAllEvs(filters = {}) {
