@@ -1,38 +1,29 @@
 import React from 'react';
-import { Zap, Moon, Sun, Database, GitBranch, ArrowRight, ShieldCheck, Car, Bike, Sparkles } from 'lucide-react';
-import { API_SOURCES } from '../services/evApi';
+import { Zap, Moon, Sun, Car, Bike, Sparkles } from 'lucide-react';
 
 export default function Header({ 
   darkMode, 
   setDarkMode, 
   activeTab, 
   setActiveTab, 
-  selectedApi, 
-  setSelectedApi, 
-  onOpenApiInspector,
   comparedCount 
 }) {
   return (
     <header className="oneui-header sticky top-0 z-40 px-4 lg:px-8 py-3 transition-all duration-300">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
         
-        {/* Logo & Brand - Samsung One UI Title */}
+        {/* Logo & Brand */}
         <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-600 via-blue-600 to-purple-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30">
               <Zap className="w-6 h-6 fill-current text-white" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-xl md:text-2xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 via-blue-600 to-purple-500 bg-clip-text text-transparent">
-                  CompareEVs
-                </h1>
-                <span className="oneui-badge bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
-                  One UI 9.0
-                </span>
-              </div>
+              <h1 className="text-xl md:text-2xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 via-blue-600 to-purple-500 bg-clip-text text-transparent">
+                CompareEVs
+              </h1>
               <p className="text-xs font-semibold text-slate-500 dark:text-slate-400">
-                Indian Automobile Market • MyNewCar & CarDekho Feeds
+                Indian Automobile Market • CarWale, Carapis, Zyla, MyNewCar & CarDekho
               </p>
             </div>
           </div>
@@ -93,19 +84,8 @@ export default function Header({
           </button>
         </nav>
 
-        {/* Right Tools & API Source Controls */}
+        {/* Right Tools & Theme Toggle */}
         <div className="hidden md:flex items-center gap-3">
-          {/* API Inspector Button */}
-          <button
-            onClick={onOpenApiInspector}
-            className="oneui-pill text-xs bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20"
-          >
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <Database className="w-3.5 h-3.5" />
-            API Feeds Live
-          </button>
-
-          {/* Theme Toggle Button */}
           <button
             onClick={() => setDarkMode(!darkMode)}
             className="oneui-pill p-2.5 text-slate-700 dark:text-slate-200"

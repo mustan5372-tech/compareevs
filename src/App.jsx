@@ -10,14 +10,14 @@ import EvDetailModal from './components/EvDetailModal';
 import FloatingCompareBar from './components/FloatingCompareBar';
 import Footer from './components/Footer';
 import { evApi } from './services/evApi';
-import { Zap, Sparkles, ArrowRight, ShieldCheck, Database, RefreshCw, Car } from 'lucide-react';
+import { Zap, Sparkles, ArrowRight, ShieldCheck, RefreshCw, Car } from 'lucide-react';
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(true);
   const [activeTab, setActiveTab] = useState('catalog');
   const [selectedApi, setSelectedApi] = useState('all');
   
-  // Compared EV IDs state (Preset with Nexon EV and MG Windsor EV for immediate preview!)
+  // Compared EV IDs state
   const [comparedIds, setComparedIds] = useState(['tata-nexon-ev', 'mg-windsor-ev', 'mahindra-be-6e']);
   
   // Modals state
@@ -93,7 +93,7 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col bg-slate-100 dark:bg-[#06080D] text-slate-900 dark:text-slate-100 transition-colors duration-300">
       
-      {/* One UI Glass Header */}
+      {/* Header */}
       <Header
         darkMode={darkMode}
         setDarkMode={setDarkMode}
@@ -101,14 +101,13 @@ export default function App() {
         setActiveTab={setActiveTab}
         selectedApi={selectedApi}
         setSelectedApi={setSelectedApi}
-        onOpenApiInspector={() => setIsApiInspectorOpen(true)}
         comparedCount={comparedIds.length}
       />
 
       {/* Main App Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-6 space-y-8">
         
-        {/* SAMSUNG ONE UI HERO HEADER SECTION (Shows on Catalog Tab) */}
+        {/* HERO HEADER SECTION (Shows on Catalog Tab) */}
         {activeTab === 'catalog' && (
           <div className="relative overflow-hidden oneui-card p-6 sm:p-10 bg-gradient-to-br from-indigo-900 via-slate-900 to-purple-950 text-white border-indigo-500/20 shadow-2xl">
             
@@ -123,15 +122,15 @@ export default function App() {
 
             <div className="relative z-10 max-w-3xl space-y-4">
               <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold text-indigo-300">
-                <Sparkles className="w-3.5 h-3.5" /> Samsung One UI 9.0 EV Portal
+                <Sparkles className="w-3.5 h-3.5" /> Indian Automobile EV Platform
               </div>
               
               <h2 className="text-3xl sm:text-5xl font-black leading-tight tracking-tight">
-                Compare Every Electric Vehicle in India Side by Side.
+                Compare Every Electric Vehicle Specs Side by Side.
               </h2>
               
               <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-medium">
-                Real-world range, DC fast charging speeds, battery chemistry, ex-showroom & on-road pricing aggregated from MyNewCar & CarDekho API feeds.
+                Real-world range, DC fast charging speeds, battery chemistry, ex-showroom & on-road pricing aggregated from CarWale, Zyla, Carapis, MyNewCar & CarDekho API feeds.
               </p>
 
               {/* Quick Hero Action Badges */}
@@ -141,13 +140,6 @@ export default function App() {
                   className="oneui-pill active text-xs sm:text-sm py-3 px-6 shadow-xl shadow-indigo-500/30 font-bold"
                 >
                   <Zap className="w-4 h-4 inline mr-2" /> Launch Side-by-Side Matrix ({comparedIds.length})
-                </button>
-
-                <button
-                  onClick={() => setIsApiInspectorOpen(true)}
-                  className="oneui-pill text-xs sm:text-sm py-3 px-5 bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20"
-                >
-                  <Database className="w-4 h-4 inline mr-2 text-emerald-400" /> MyNewCar & CarDekho API Live
                 </button>
               </div>
 
@@ -173,7 +165,7 @@ export default function App() {
             {loading ? (
               <div className="py-20 text-center space-y-4">
                 <RefreshCw className="w-8 h-8 animate-spin text-indigo-500 mx-auto" />
-                <p className="text-xs text-slate-400 font-semibold">Fetching latest specs from API feed...</p>
+                <p className="text-xs text-slate-400 font-semibold">Fetching latest specs from API feeds...</p>
               </div>
             ) : evList.length === 0 ? (
               <div className="oneui-card p-12 text-center space-y-4">

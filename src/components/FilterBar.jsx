@@ -51,7 +51,7 @@ export default function FilterBar({
           <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
-            placeholder="Search Nexon, BE 6e, Windsor, Seal..."
+            placeholder="Search Nexon, BE 6e, Windsor, Seal, Curvv..."
             value={filters.search}
             onChange={(e) => setFilters({ ...filters, search: e.target.value })}
             className="oneui-input w-full pl-11 pr-4 text-xs md:text-sm"
@@ -68,15 +68,18 @@ export default function FilterBar({
 
         {/* API Feed Source Pill Dropdown */}
         <div className="flex items-center gap-2 w-full lg:w-auto justify-end">
-          <span className="text-xs font-semibold text-slate-400 hidden xl:inline">API Feed:</span>
+          <span className="text-xs font-semibold text-slate-400 hidden xl:inline">Data Source:</span>
           <select
             value={selectedApi}
             onChange={(e) => setSelectedApi(e.target.value)}
             className="oneui-input text-xs font-bold cursor-pointer py-2 px-4 bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 border-indigo-500/20"
           >
-            <option value="all">🌐 MyNewCar + CarDekho Feed</option>
-            <option value="mynewcar">🚗 MyNewCar API Endpoint</option>
-            <option value="cardekho">⚡ CarDekho EV Service</option>
+            <option value="all">🌐 Consolidated Multi-API Feed</option>
+            <option value="carwale">🚘 CarWale EV API</option>
+            <option value="zyla">⚡ Zyla Indian EV Dataset</option>
+            <option value="carapis">🚗 Carapis API Feed</option>
+            <option value="mynewcar">🏎️ MyNewCar API Endpoint</option>
+            <option value="cardekho">🚙 CarDekho EV Service</option>
           </select>
         </div>
 
