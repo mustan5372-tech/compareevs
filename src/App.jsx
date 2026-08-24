@@ -30,7 +30,7 @@ export default function App() {
     bodyType: 'all',
     search: '',
     sortBy: 'score-high',
-    maxPrice: 8000000,
+    maxPrice: 15000000,
     minRange: 0
   });
 
@@ -83,7 +83,7 @@ export default function App() {
       bodyType: 'all',
       search: '',
       sortBy: 'score-high',
-      maxPrice: 8000000,
+      maxPrice: 15000000,
       minRange: 0
     });
   };
